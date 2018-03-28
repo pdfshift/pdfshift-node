@@ -1,0 +1,28 @@
+{
+  "name": "pdfshift",
+  "version": "1.0.0",
+  "description": "Convert HTML documents to PDF using the PDFShift.io API.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdfshift/pdfshift-node.git"
+  },
+  "keywords": [
+    "html",
+    "pdf",
+    "api",
+    "pdfshift",
+    "convert",
+    "document"
+  ],
+  "author": "Cyril Nicodeme <contact@pdfshift.io> (https://pdfshift.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdfshift/pdfshift-node/issues"
+  },
+  "homepage": "https://github.com/pdfshift/pdfshift-node#readme",
+  "dependencies": {
+    "request": "^2.85.0"
+  }
+}
