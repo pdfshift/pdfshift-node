@@ -59,7 +59,7 @@ PDFShiftPrepared.prototype = {
         this.options['cookies'] = cookies
         return this
     },
-    addCookie: function (name, value, secure = false, http_only = false) {
+    addCookie: function ({name, value, secure = false, http_only = false}) {
         if (!('cookies' in this.options)) {
             this.options['cookies'] = []
         }
@@ -91,7 +91,7 @@ PDFShiftPrepared.prototype = {
         }
         return this
     },
-    header: function (source, spacing = null) {
+    header: function ({source, spacing = null}) {
         if (source === null) {
             delete this.options['header'];
         } else {
@@ -99,7 +99,7 @@ PDFShiftPrepared.prototype = {
         }
         return this
     },
-    footer: function (source, spacing = null) {
+    footer: function ({source, spacing = null}) {
         if (source === null) {
             delete this.options['footer'];
         } else {
@@ -111,12 +111,12 @@ PDFShiftPrepared.prototype = {
         this.options['protection'] = arguments[0]
         return this
     },
-    watermark: function (source, offset_x = null, offset_y = null, rotation = null, background = false) {
+    watermark: function ({source, offset_x = null, offset_y = null, rotation = null, background = false}) {
         this.options['watermark'] = arguments
         return this
     },
     convert: function () {
-        return this._parent.convert(this.options)
+        return this._parent.convert(this.options['source'], this.options)
     }
 }
 
@@ -126,7 +126,8 @@ PDFShift.prototype = {
             this.apiKey = key
         }
     },
-    convert: function(options) {
+    convert: function(source, options) {
+        options['source'] = source
         return new Promise((resolve, reject) => {
             request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options}, (error, response, body) => {
                 body = this._parseResponse(response, body, reject)
@@ -158,6 +159,10 @@ PDFShift.prototype = {
                 }
                 return reject({'message': 'Invalid response from the server.', 'code': statusCode, 'response': response})
             }
+        }
+
+        if (response === undefined) {
+            return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
         }
 
         if (response.statusCode >= 400) {
