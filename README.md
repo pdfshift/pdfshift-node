@@ -60,7 +60,7 @@ pdfshift.convert(data).then(function (binary_file) {
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-pdfshift.convert('https://www.example.com').then(function (binary_file) {
+pdfshift.convert('https://www.example.com', {css: 'https://www.example.com/public/css/print.css'}).then(function (binary_file) {
     fs.writeFile('result.pdf', binary_file, "binary", function () {})
 }).catch(function({message, code, response, errors = null}) {})
 ```
@@ -71,7 +71,7 @@ pdfshift.convert('https://www.example.com').then(function (binary_file) {
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-pdfshift.convert('https://www.example.com', {css: 'https://www.example.com/public/css/print.css'}).then(function (binary_file) {
+pdfshift.convert('https://www.example.com', {css: 'a {text-decoration: underline; color: blue}'}).then(function (binary_file) {
     fs.writeFile('result.pdf', binary_file, "binary", function () {})
 }).catch(function({message, code, response, errors = null}) {})
 ```
@@ -135,7 +135,13 @@ const fs = require('fs');
 
 // We use .prepare() instead of .convert for easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
-    .watermark({source: 'https://pdfshift.io/static/static/img/logo.png', offset_x: 50, offset_y: '100px', 'rotate': 45, 'background': true)
+    .watermark({
+        source: 'https://pdfshift.io/static/static/img/logo.png',
+        offset_x: 50,
+        offset_y: '100px',
+        rotate: 45,
+        background: true
+    })
     .convert()
     .then(function (binary_file) {
         fs.writeFile('result.pdf', binary_file, "binary", function () {})
@@ -167,7 +173,12 @@ const fs = require('fs');
 
 // We use .prepare() instead of .convert for easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
-    .protect({encrypt: 128, user_password: 'user', 'owner_password': 'owner', 'no_print': true})
+    .protect({
+        encrypt: 128,
+        user_password: 'user',
+        owner_password: 'owner',
+        no_print: true
+    })
     .convert()
     .then(function (binary_file) {
         fs.writeFile('result.pdf', binary_file, "binary", function () {})
