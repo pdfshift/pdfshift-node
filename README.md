@@ -82,7 +82,7 @@ pdfshift.convert('https://www.example.com', {css: 'a {text-decoration: underline
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://httpbin.org/headers')
     .setHTTPHeaders({
         'X-Original-Header': 'Awesome value'
@@ -101,7 +101,7 @@ pdfshift.prepare('https://httpbin.org/headers')
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://httpbin.org/basic-auth/user/passwd')
     .auth('user', 'passwd')
     .convert()
@@ -117,7 +117,7 @@ pdfshift.prepare('https://httpbin.org/basic-auth/user/passwd')
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://httpbin.org/cookies')
     .addCookie({name: 'session', value: '4cb496a8-a3eb-4a7e-a704-f993cb6a4dac'})
     .convert()
@@ -133,7 +133,7 @@ pdfshift.prepare('https://httpbin.org/cookies')
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
     .watermark({
         source: 'https://pdfshift.io/static/static/img/logo.png',
@@ -155,7 +155,7 @@ pdfshift.prepare('https://www.example.com')
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
     .footer({source: '<div>Page {{page}} of {{total}}</div>', spacing: '50px'})
     .convert()
@@ -171,7 +171,7 @@ pdfshift.prepare('https://www.example.com')
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-// We use .prepare() instead of .convert for easily handle advanced configuration
+// We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
     .protect({
         encrypt: 128,
