@@ -45,7 +45,7 @@ pdfshift.convert('https://www.example.com').then(function (binary_file) {
 const pdfshift = require('./')('120d8e8a86d2....................');
 const fs = require('fs');
 
-let data = fs.readFileSync('page.html', 'utf8');
+let data = fs.readFileSync('invoice.html', 'utf8');
 
 pdfshift.convert(data).then(function (binary_file) {
     fs.writeFile('result.pdf', binary_file, "binary", function () {})
