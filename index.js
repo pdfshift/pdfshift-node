@@ -27,7 +27,7 @@
 // Thanks !!                                                                   *
 // *****************************************************************************
 
-PDFShift.apiBaseUrl = 'https://pdfshift.io/v2'
+PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2'
 
 const request = require('request')
 
