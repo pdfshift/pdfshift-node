@@ -27,8 +27,7 @@
 // Thanks !!                                                                   *
 // *****************************************************************************
 
-// PDFShift.apiBaseUrl = 'https://pdfshift.io/v2'
-PDFShift.apiBaseUrl = 'http://127.0.0.1:5000/v2'
+PDFShift.apiBaseUrl = 'https://pdfshift.io/v2'
 
 const request = require('request')
 
@@ -52,7 +51,10 @@ PDFShiftPrepared.prototype = {
         return this
     },
     auth: function (username = null, password = null) {
-        this.options['auth'] = arguments
+        this.options['auth'] = {
+            username: username,
+            password: password
+        }
         return this
     },
     setCookies: function (cookies) {
@@ -111,7 +113,7 @@ PDFShiftPrepared.prototype = {
         this.options['protection'] = arguments[0]
         return this
     },
-    watermark: function ({source, offset_x = null, offset_y = null, rotation = null, background = false}) {
+    watermark: function ({source, offset_x = null, offset_y = null, rotate = null, background = false}) {
         this.options['watermark'] = arguments
         return this
     },
