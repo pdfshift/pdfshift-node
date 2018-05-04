@@ -130,11 +130,12 @@ PDFShift.prototype = {
     },
     convert: function(source, options) {
         options['source'] = source
+        console.log(options)
         return new Promise((resolve, reject) => {
-            request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options}, (error, response, body) => {
-                body = this._parseResponse(response, body, reject)
+            request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options, 'encoding': null}, (error, response, body) => {
+                this._checkResponse(response, body, reject)
                 if (body === undefined) return
-                return resolve(Buffer.from(body.content, 'base64'))
+                return resolve(body)
             })
         })
     },
@@ -144,27 +145,19 @@ PDFShift.prototype = {
     credits: function() {
         return new Promise((resolve, reject) => {
             request.get(PDFShift.apiBaseUrl + '/credits/', {'auth': {'user': this.apiKey}}, (error, response, body) => {
-                body = this._parseResponse(response, body, reject)
+                this._checkResponse(response, body, reject)
                 if (body === undefined) return
-                return resolve(body)
+                return resolve(JSON.parse(body))
             })
         })
     },
-    _parseResponse: function(response, body, reject) {
-        if (typeof(body) === 'string') {
-            try {
-                body = JSON.parse(body)
-            } catch (e) {
-                let statusCode = 0
-                if (response !== undefined) {
-                    statusCode = response.statusCode
-                }
-                return reject({'message': 'Invalid response from the server.', 'code': statusCode, 'response': response})
-            }
-        }
-
+    _checkResponse: function(response, body, reject) {
         if (response === undefined) {
             return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
+        }
+
+        if (response.statusCode == 200) {
+            return true
         }
 
         if (response.statusCode >= 400) {
@@ -176,7 +169,7 @@ PDFShift.prototype = {
             return reject({'message': body.error, 'code': body.code, 'response': response})
         }
 
-        return body
+        return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
     }
 }
 
