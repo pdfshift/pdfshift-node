@@ -1,6 +1,6 @@
 {
   "name": "pdfshift",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Convert HTML documents to PDF using the PDFShift.io API.",
   "main": "index.js",
   "scripts": {},
