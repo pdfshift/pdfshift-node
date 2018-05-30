@@ -136,11 +136,10 @@ const fs = require('fs');
 // We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
     .watermark({
-        source: 'https://pdfshift.io/static/static/img/logo.png',
+        image: 'https://pdfshift.io/static/img/logo.png',
         offset_x: 50,
         offset_y: '100px',
-        rotate: 45,
-        background: true
+        rotate: 45
     })
     .convert()
     .then(function (binary_file) {
@@ -174,7 +173,6 @@ const fs = require('fs');
 // We use .prepare() instead of .convert to easily handle advanced configuration
 pdfshift.prepare('https://www.example.com')
     .protect({
-        encrypt: 128,
         user_password: 'user',
         owner_password: 'owner',
         no_print: true
