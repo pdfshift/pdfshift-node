@@ -31,7 +31,7 @@ const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 #### With an URL
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 pdfshift.convert('https://www.example.com').then(function (binary_file) {
@@ -42,7 +42,7 @@ pdfshift.convert('https://www.example.com').then(function (binary_file) {
 #### With inline HTML data:
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 let data = fs.readFileSync('invoice.html', 'utf8');
@@ -57,7 +57,7 @@ pdfshift.convert(data).then(function (binary_file) {
 #### Loading CSS from an URL:
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 pdfshift.convert('https://www.example.com', {css: 'https://www.example.com/public/css/print.css'}).then(function (binary_file) {
@@ -68,7 +68,7 @@ pdfshift.convert('https://www.example.com', {css: 'https://www.example.com/publi
 #### Loading CSS from a string:
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 pdfshift.convert('https://www.example.com', {css: 'a {text-decoration: underline; color: blue}'}).then(function (binary_file) {
@@ -79,7 +79,7 @@ pdfshift.convert('https://www.example.com', {css: 'a {text-decoration: underline
 ### Custom HTTP Headers
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
@@ -98,7 +98,7 @@ pdfshift.prepare('https://httpbin.org/headers')
 ### Accessing secured pages
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
@@ -114,7 +114,7 @@ pdfshift.prepare('https://httpbin.org/basic-auth/user/passwd')
 ### Using cookies
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
@@ -130,7 +130,7 @@ pdfshift.prepare('https://httpbin.org/cookies')
 ### Adding Watermark (Oh hi Mark!)
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
@@ -151,7 +151,7 @@ pdfshift.prepare('https://www.example.com')
 ### Custom Header (or Footer)
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
@@ -167,7 +167,7 @@ pdfshift.prepare('https://www.example.com')
 ### Protecting the generated PDF
 
 ```javascript
-const pdfshift = require('./')('120d8e8a86d2....................');
+const pdfshift = require('pdfshift')('120d8e8a86d2....................');
 const fs = require('fs');
 
 // We use .prepare() instead of .convert to easily handle advanced configuration
