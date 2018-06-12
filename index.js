@@ -113,8 +113,31 @@ PDFShiftPrepared.prototype = {
         this.options['protection'] = arguments[0]
         return this
     },
-    watermark: function ({source, offset_x = null, offset_y = null, rotate = null, background = false}) {
-        this.options['watermark'] = arguments
+    watermark: function ({text = null, image = null, source = null, offset_x = null, offset_y = null, rotate = null, font_size = 16, font_family = null, font_color = null, font_opacity = 100, font_fold = false, font_italic = false}) {
+        let watermark = arguments[0];
+
+        present = 0;
+        if (watermark['text'] === null) {
+            delete watermark['text']
+        } else {
+            present++;
+        }
+        if (watermark['image'] === null) {
+            delete watermark['image']
+        } else {
+            present++;
+        }
+        if (watermark['source'] === null) {
+            delete watermark['source']
+        } else {
+            present++;
+        }
+
+        if (present !== 1) {
+            throw 'Please indicate either "source", "image" or "text" for watermark.'
+        }
+
+        this.options['watermark'] = watermark
         return this
     },
     convert: function () {
@@ -130,7 +153,6 @@ PDFShift.prototype = {
     },
     convert: function(source, options) {
         options['source'] = source
-        console.log(options)
         return new Promise((resolve, reject) => {
             request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options, 'encoding': null}, (error, response, body) => {
                 this._checkResponse(response, body, reject)
