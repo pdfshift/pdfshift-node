@@ -151,10 +151,14 @@ PDFShift.prototype = {
             this.apiKey = key
         }
     },
-    convert: function(source, options) {
+    convert: function(source, options = null) {
+        if (options === null) {
+            options = {}
+        }
+
         options['source'] = source
         return new Promise((resolve, reject) => {
-            request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options, 'encoding': null}, (error, response, body) => {
+            request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options, 'encoding': null, ecdhCurve: 'auto'}, (error, response, body) => {
                 this._checkResponse(response, body, reject)
                 if (body === undefined) return
                 return resolve(body)
@@ -166,7 +170,7 @@ PDFShift.prototype = {
     },
     credits: function() {
         return new Promise((resolve, reject) => {
-            request.get(PDFShift.apiBaseUrl + '/credits/', {'auth': {'user': this.apiKey}}, (error, response, body) => {
+            request.get(PDFShift.apiBaseUrl + '/credits/', {'auth': {'user': this.apiKey}, ecdhCurve: 'auto'}, (error, response, body) => {
                 this._checkResponse(response, body, reject)
                 if (body === undefined) return
                 return resolve(JSON.parse(body))
