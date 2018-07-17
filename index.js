@@ -113,10 +113,9 @@ PDFShiftPrepared.prototype = {
         this.options['protection'] = arguments[0]
         return this
     },
-    watermark: function ({text = null, image = null, source = null, offset_x = null, offset_y = null, rotate = null, font_size = 16, font_family = null, font_color = null, font_opacity = 100, font_fold = false, font_italic = false}) {
+    watermark: function ({text = null, image = null, source = null, offset_x = null, offset_y = null, rotate = null, font_size = 16, font_family = null, font_color = null, font_opacity = 100, font_bold = false, font_italic = false}) {
         let watermark = arguments[0];
-
-        present = 0;
+        let present = 0;
         if (watermark['text'] === null) {
             delete watermark['text']
         } else {
