@@ -21,8 +21,5 @@
   "bugs": {
     "url": "https://github.com/pdfshift/pdfshift-node/issues"
   },
-  "homepage": "https://github.com/pdfshift/pdfshift-node#readme",
-  "dependencies": {
-    "request": "^2.85.0"
-  }
+  "homepage": "https://github.com/pdfshift/pdfshift-node#readme"
 }

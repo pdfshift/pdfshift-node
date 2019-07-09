@@ -27,9 +27,8 @@
 // Thanks !!                                                                   *
 // *****************************************************************************
 
-PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2'
 
-const request = require('request')
+PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2';
 
 function PDFShift(key) {
     if (!(this instanceof PDFShift)) {
@@ -43,7 +42,7 @@ let PDFShiftPrepared = function(source, options = {}, _parent) {
     this.options = options
     this.options['source'] = source
     this._parent = _parent
-}
+};
 
 PDFShiftPrepared.prototype = {
     margin: function ({top = null, right = null, bottom = null, left = null}) {
@@ -54,7 +53,7 @@ PDFShiftPrepared.prototype = {
         this.options['auth'] = {
             username: username,
             password: password
-        }
+        };
         return this
     },
     setCookies: function (cookies) {
@@ -110,7 +109,7 @@ PDFShiftPrepared.prototype = {
         return this
     },
     protect: function ({encryption = 128, author = null, userPassword : user_password = null, ownerPassword : owner_password = null, noPrint : no_print = false, noCopy : no_copy = false, noModify : no_modify = false}) {
-        this.options['protection'] = arguments[0]
+        this.options['protection'] = arguments[0];
         return this
     },
     watermark: function ({text = null, image = null, source = null, offset_x = null, offset_y = null, rotate = null, font_size = 16, font_family = null, font_color = null, font_opacity = 100, font_bold = false, font_italic = false}) {
@@ -136,13 +135,14 @@ PDFShiftPrepared.prototype = {
             throw 'Please indicate either "source", "image" or "text" for watermark.'
         }
 
-        this.options['watermark'] = watermark
+        this.options['watermark'] = watermark;
         return this
     },
     convert: function () {
         return this._parent.convert(this.options['source'], this.options)
     }
-}
+};
+
 
 PDFShift.prototype = {
     setApiKey(key) {
@@ -155,13 +155,16 @@ PDFShift.prototype = {
             options = {}
         }
 
-        options['source'] = source
+        options['source'] = source;
         return new Promise((resolve, reject) => {
-            request.post(PDFShift.apiBaseUrl + '/convert/', {'auth': {'user': this.apiKey}, 'json': options, 'encoding': null, ecdhCurve: 'auto'}, (error, response, body) => {
-                this._checkResponse(response, body, reject)
-                if (body === undefined) return
+
+            this._doFetch("post", "/convert/", options).then(response => {
+
+                const body = response.body;
+                this._checkResponse(response, body, reject);
+                if (body === undefined) return;
                 return resolve(body)
-            })
+            });
         })
     },
     prepare: function(source, options) {
@@ -169,23 +172,27 @@ PDFShift.prototype = {
     },
     credits: function() {
         return new Promise((resolve, reject) => {
-            request.get(PDFShift.apiBaseUrl + '/credits/', {'auth': {'user': this.apiKey}, ecdhCurve: 'auto'}, (error, response, body) => {
-                this._checkResponse(response, body, reject)
-                if (body === undefined) return
-                return resolve(JSON.parse(body))
-            })
-        })
+
+            this._doFetch("get", "/credits/", {}).then(response => {
+
+                this._checkResponse(response, response.body, reject);
+                response.json().then(json => {
+
+                    resolve(json);
+                });
+            });
+        });
     },
     _checkResponse: function(response, body, reject) {
         if (response === undefined) {
             return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
         }
 
-        if (response.statusCode == 200) {
+        if (response.status == 200) {
             return true
         }
 
-        if (response.statusCode >= 400) {
+        if (response.status >= 400) {
             // Handle errors
             if ('errors' in body) {
                 return reject({'message': 'Invalid data submitted', 'code': body.code, 'response': response, 'errors': body.errors})
@@ -195,7 +202,35 @@ PDFShift.prototype = {
         }
 
         return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
+    },
+
+    /**
+     * @param path
+     * @returns {Promise<Response>}
+     */
+    _doFetch: function(method, path, options) {
+
+        const headers = {
+            "Authorization": 'Basic '+btoa(this.apiKey + ':password'),
+            "Content-Type": "application/json"
+        };
+
+        const body = this._shouldHaveBody(method)? JSON.stringify(options): undefined;
+
+        return fetch(PDFShift.apiBaseUrl + path, {
+            method, headers, body
+        });
+    },
+
+    _shouldHaveBody(method) {
+
+        method = method.toLowerCase();
+        return !(method === "get" || method === "head")
     }
-}
+};
+
+
+
+
 
 module.exports = PDFShift;
