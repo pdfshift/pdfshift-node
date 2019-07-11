@@ -96,7 +96,7 @@ PDFShiftPrepared.prototype = {
         if (source === null) {
             delete this.options['header'];
         } else {
-            this.options['header'] = arguments
+            this.options['header'] = arguments[0]
         }
         return this
     },
@@ -104,7 +104,7 @@ PDFShiftPrepared.prototype = {
         if (source === null) {
             delete this.options['footer'];
         } else {
-            this.options['footer'] = arguments
+            this.options['footer'] = arguments[0]
         }
         return this
     },
