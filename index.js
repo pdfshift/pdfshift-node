@@ -28,6 +28,7 @@
 // *****************************************************************************
 
 
+const fetch = require("cross-fetch");
 PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2';
 
 function PDFShift(key) {
@@ -39,14 +40,14 @@ function PDFShift(key) {
 }
 
 let PDFShiftPrepared = function(source, options = {}, _parent) {
-    this.options = options
-    this.options['source'] = source
+    this.options = options;
+    this.options['source'] = source;
     this._parent = _parent
 };
 
 PDFShiftPrepared.prototype = {
     margin: function ({top = null, right = null, bottom = null, left = null}) {
-        this.options['margin'] = arguments[0]
+        this.options['margin'] = arguments[0];
         return this
     },
     auth: function (username = null, password = null) {
@@ -57,7 +58,7 @@ PDFShiftPrepared.prototype = {
         return this
     },
     setCookies: function (cookies) {
-        this.options['cookies'] = cookies
+        this.options['cookies'] = cookies;
         return this
     },
     addCookie: function ({name, value, secure = false, http_only = false}) {
@@ -65,7 +66,7 @@ PDFShiftPrepared.prototype = {
             this.options['cookies'] = []
         }
 
-        this.options['cookies'].push(arguments)
+        this.options['cookies'].push(arguments);
         return this
     },
     clearCookies: function () {
@@ -75,7 +76,7 @@ PDFShiftPrepared.prototype = {
         return this
     },
     setHTTPHeaders: function (headers) {
-        this.options['http_headers'] = headers
+        this.options['http_headers'] = headers;
         return this
     },
     addHTTPHeader: function (name, value = null) {
@@ -83,7 +84,7 @@ PDFShiftPrepared.prototype = {
             this.options['http_headers'] = {}
         }
 
-        this.options['http_headers'][name] = value
+        this.options['http_headers'][name] = value;
         return this
     },
     clearHTTPHeaders: function () {
@@ -145,11 +146,13 @@ PDFShiftPrepared.prototype = {
 
 
 PDFShift.prototype = {
+
     setApiKey(key) {
         if (key) {
             this.apiKey = key
         }
     },
+
     convert: function(source, options = null) {
         if (options === null) {
             options = {}
@@ -167,9 +170,11 @@ PDFShift.prototype = {
             });
         })
     },
+
     prepare: function(source, options) {
         return new PDFShiftPrepared(source, options, this)
     },
+
     credits: function() {
         return new Promise((resolve, reject) => {
 
@@ -183,6 +188,7 @@ PDFShift.prototype = {
             });
         });
     },
+
     _checkResponse: function(response, body, reject) {
         if (response === undefined) {
             return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
@@ -204,14 +210,10 @@ PDFShift.prototype = {
         return reject({'message': 'Invalid response from the server.', 'code': 0, 'response': response})
     },
 
-    /**
-     * @param path
-     * @returns {Promise<Response>}
-     */
     _doFetch: function(method, path, options) {
 
         const headers = {
-            "Authorization": 'Basic '+btoa(this.apiKey + ':password'),
+            "Authorization": 'Basic '+ this._encode(this.apiKey + ':password'),
             "Content-Type": "application/json"
         };
 
@@ -226,6 +228,15 @@ PDFShift.prototype = {
 
         method = method.toLowerCase();
         return !(method === "get" || method === "head")
+    },
+
+    _encode: function(value) {
+
+        if (typeof btoa !== 'undefined') {
+            return btoa(value)
+        }
+
+        return Buffer.from(value).toString('base64')
     }
 };
 
