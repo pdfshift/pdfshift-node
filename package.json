@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/pdfshift/pdfshift-node#readme",
   "dependencies": {
-    "np": "^5.0.3",
-    "request": "^2.85.0"
+    "cross-fetch": "^3.0.4"
   }
 }
