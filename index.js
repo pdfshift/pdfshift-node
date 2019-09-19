@@ -27,8 +27,16 @@
 // Thanks !!                                                                   *
 // *****************************************************************************
 
+var has_require = typeof require !== 'undefined'
+var fetch = this.fetch
 
-const fetch = require("cross-fetch");
+if( typeof fetch === 'undefined' ) {
+    if( has_require ) {
+        fetch = require('cross-fetch')
+    }
+    else throw new Error('PDFShift requires "cross-fetch", see http://npmjs.org/cross-fetch/');
+}
+
 PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2';
 
 function PDFShift(key) {
@@ -146,7 +154,6 @@ PDFShiftPrepared.prototype = {
 
 
 PDFShift.prototype = {
-
     setApiKey(key) {
         if (key) {
             this.apiKey = key
@@ -160,13 +167,15 @@ PDFShift.prototype = {
 
         options['source'] = source;
         return new Promise((resolve, reject) => {
-
             this._doFetch("post", "/convert/", options).then(response => {
-
-                const body = response.body;
-                this._checkResponse(response, body, reject);
-                if (body === undefined) return;
-                return resolve(body)
+                this._checkResponse(response, response.body, reject);
+                if (response.headers.get('content-type') == 'application/json') {
+                    response.json().then(json => {
+                        resolve(json);
+                    });
+                } else {
+                    resolve(response.body);
+                }
             });
         })
     },
@@ -177,12 +186,9 @@ PDFShift.prototype = {
 
     credits: function() {
         return new Promise((resolve, reject) => {
-
-            this._doFetch("get", "/credits/", {}).then(response => {
-
+            this._doFetch("get", "/credits/").then(response => {
                 this._checkResponse(response, response.body, reject);
                 response.json().then(json => {
-
                     resolve(json);
                 });
             });
@@ -211,37 +217,28 @@ PDFShift.prototype = {
     },
 
     _doFetch: function(method, path, options) {
-
         const headers = {
-            "Authorization": 'Basic '+ this._encode(this.apiKey + ':password'),
+            "Authorization": 'Basic '+ this._encode(this.apiKey + ':'),
             "Content-Type": "application/json"
         };
 
-        const body = this._shouldHaveBody(method)? JSON.stringify(options): undefined;
+        let body = null;
+        if (options) {
+            body = JSON.stringify(options)
+        }
 
         return fetch(PDFShift.apiBaseUrl + path, {
             method, headers, body
         });
     },
 
-    _shouldHaveBody(method) {
-
-        method = method.toLowerCase();
-        return !(method === "get" || method === "head")
-    },
-
     _encode: function(value) {
-
-        if (typeof btoa !== 'undefined') {
+        if (typeof btoa === 'function') {
             return btoa(value)
         }
 
         return Buffer.from(value).toString('base64')
     }
 };
-
-
-
-
 
 module.exports = PDFShift;
