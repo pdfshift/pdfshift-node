@@ -34,7 +34,7 @@ if( typeof fetch === 'undefined' ) {
     if( has_require ) {
         fetch = require('cross-fetch')
     }
-    else throw new Error('PDFShift requires "cross-fetch", see http://npmjs.org/cross-fetch/');
+    else throw new Error('PDFShift requires "cross-fetch", see http://npmjs.org/package/cross-fetch');
 }
 
 PDFShift.apiBaseUrl = 'https://api.pdfshift.io/v2';
