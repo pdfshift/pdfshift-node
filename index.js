@@ -174,7 +174,9 @@ PDFShift.prototype = {
                         resolve(json);
                     });
                 } else {
-                    resolve(response.body);
+                    response.arrayBuffer().then(buf => {
+                        resolve(new Buffer(buf));
+                    })
                 }
             });
         })
