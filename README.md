@@ -1,3 +1,6 @@
+:warning: **PDFShift's API being simple to implement and use, we realized that using a custom library just to wrap a network library was not necessary.
+As such, we decided to close this package and we recommend you to use a network library such as `axios` to communicate with PDFShift.**
+
 PDFShift Node Package
 =======================
 
